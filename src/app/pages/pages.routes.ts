@@ -13,12 +13,12 @@ const pagesRoutes: Routes = [
     { path: '',
         component: PagesComponent,
         children: [
-            { path: 'dashboard', component: DashboardComponent },
-            { path: 'progress', component: ProgressComponent },
-            { path: 'graphics1', component: Graphics1Component },
-            { path: 'promesas', component: PromesasComponent },
-            { path: 'account-settings', component: AccountSettingsComponent},
-            { path: 'rxjs', component: RxjsComponent},
+            { path: 'dashboard', component: DashboardComponent, data: {titulo: 'Dashboard'} },
+            { path: 'progress', component: ProgressComponent, data: {titulo: 'ProgressBars'} },
+            { path: 'graphics1', component: Graphics1Component, data: {titulo: 'Gráficas'} },
+            { path: 'promesas', component: PromesasComponent, data: {titulo: 'Promesas'} },
+            { path: 'account-settings', component: AccountSettingsComponent, data: {titulo: 'Ajustes de Tema'}},
+            { path: 'rxjs', component: RxjsComponent, data: {titulo: 'RxJs'}},
             { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
         ]
     },
