@@ -10,7 +10,7 @@ export class PromesasComponent implements OnInit {
   constructor() {
 
     this.contarTres().then(
-      mensaje => console.log('Termino!', mensaje)
+      // mensaje => console.log('Termino!', mensaje)
     ).catch( error => console.error('Error en la promesa', error));
    }
 
@@ -26,7 +26,7 @@ export class PromesasComponent implements OnInit {
 
 
         contador += 1;
-        console.log(contador);
+        // console.log(contador);
         if (contador === 3) {
           resolve( true );
 

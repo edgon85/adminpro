@@ -18,9 +18,10 @@ export class RxjsComponent implements OnInit, OnDestroy {
 
     this.subscription =  this.regresaObservable()
         .subscribe(
-        numero => console.log('Subs', numero ),
-        error => console.error('Error en el obs', error),
-        () => console.log('El observador termino'));
+        // numero => console.log('Subs', numero ),
+        // error => console.error('Error en el obs', error),
+        // () => console.log('El observador termino')
+      );
   }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class RxjsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('La pagina se va a cerrar');
+    // console.log('La pagina se va a cerrar');
     this.subscription.unsubscribe();
   }
 
@@ -72,8 +73,8 @@ export class RxjsComponent implements OnInit, OnDestroy {
         return false;
       }
 
-      console.log('filter', valor, index);
-      return true;
+      // console.log('filter', valor, index);
+      // return true;
     });
   }
 
