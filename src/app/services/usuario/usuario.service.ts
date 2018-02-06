@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 export class UsuarioService {
 
   constructor( public http: HttpClient) {
-    console.log('Servicio de usuario listo');
+    // console.log('Servicio de usuario listo');
   }
 
 
@@ -23,5 +23,25 @@ export class UsuarioService {
                 swal('Usuario creado', usuario.email, 'success');
                 return resp.usuario;
               });
+  }
+
+
+  login ( usuario: User, recordar: boolean = false ) {
+
+    let url = URL_SERVICIOS + '/api/v1/auth/';
+
+    if ( recordar) {
+      localStorage.setItem('email', usuario.email );
+    }else {
+      localStorage.removeItem('email');
+    }
+
+
+    return this.http.post( url, usuario ).
+        map( (resp: any) => {
+          localStorage.setItem('token', resp.token);
+
+          return true;
+        });
   }
 }
