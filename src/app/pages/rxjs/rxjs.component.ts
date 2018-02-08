@@ -74,7 +74,7 @@ export class RxjsComponent implements OnInit, OnDestroy {
       }
 
       // console.log('filter', valor, index);
-      return true;
+      // return true;
     });
   }
 
