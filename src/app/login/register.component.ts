@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as swal from 'sweetalert';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
+import { Router } from '@angular/router';
 
 declare function init_plugins();
 
@@ -15,7 +16,9 @@ export class RegisterComponent implements OnInit {
 
   forma: FormGroup;  // trabaja el formulario de registro
 
-  constructor( public _usuarioService: UsuarioService) { }
+  constructor(
+    public _usuarioService: UsuarioService,
+    public router: Router) { }
 
   sonIguales( campo1: string, campo2: string ) { // valida las contraseñas
 
@@ -82,7 +85,10 @@ export class RegisterComponent implements OnInit {
     // llamamos el servicio crear usuario y todo el json de la api se guarda en resp
     this._usuarioService.crearUsuario(usuario)
                 .subscribe( resp => {
-                  console.log(resp);
+                  // console.log(resp); // muetra el resultado del json que manda el servidor
+
+                  this.router.navigate(['/login']);
+
                 });
   }
 
