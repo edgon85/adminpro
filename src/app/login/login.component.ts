@@ -30,10 +30,15 @@ export class LoginComponent implements OnInit {
 
     let usuario = new Usuario(forma.value.email, null, forma.value.password, null );
 
+    // hace login y redirige al dashboard
     this._usuarioService.login( usuario, forma.value.recuerdame )
-                        .subscribe( resp => {
-                          console.log( resp );
-                        });
+                        .subscribe( correcto => this.router.navigate(['/dashboard']));
+
+    // // hace login y muestra los resultados en consola (sin el map en el servicio)
+    // this._usuarioService.login( usuario, forma.value.recuerdame )
+    //                     .subscribe( resp => {
+    //                       console.log( resp );
+    //                     });
 
 
     // console.log( forma.valid );

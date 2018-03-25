@@ -28,6 +28,13 @@ export class UsuarioService {
 
     let url = URL_SERVICIOS + 'auth/';
 
-    return this.http.post( url, usuario);
+    return this.http.post( url, usuario)
+               .map( (resp: any) => {
+                 localStorage.setItem('id', resp.id);
+                 localStorage.setItem('token', resp.token);
+                 localStorage.setItem('usuario', resp.user);
+
+                 return true;
+              });
   }
 }
