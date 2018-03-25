@@ -11,7 +11,7 @@ export class UsuarioService {
     console.log('Servicio de usuario listo');
   }
 
-
+  // crea un usuario en el backend
   crearUsuario( usuario: Usuario) {
 
     let url = URL_SERVICIOS + 'auth/register/';
@@ -21,5 +21,13 @@ export class UsuarioService {
                   swal('Usuario creado', usuario.email, 'success');
                   return resp.usuario;
                 });
+  }
+
+  // inicio de sesion
+  login( usuario: Usuario, recordar: boolean = false ) {
+
+    let url = URL_SERVICIOS + 'auth/';
+
+    return this.http.post( url, usuario);
   }
 }
