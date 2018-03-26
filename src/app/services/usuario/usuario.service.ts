@@ -3,6 +3,7 @@ import { Usuario } from '../../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UsuarioService {
@@ -10,7 +11,8 @@ export class UsuarioService {
   usuario: string;
   token: string;
 
-  constructor( public http: HttpClient) {
+  constructor( public http: HttpClient,
+               public router: Router ) {
     this.cargarStorage();
     // console.log('Servicio de usuario listo');
   }
@@ -52,6 +54,18 @@ export class UsuarioService {
 
                  return true;
               });
+  }
+
+  // logout del usuario
+  logout() {
+    this.token = '';
+    this.usuario = '';
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('id');
+
+    this.router.navigate(['/login']);
   }
 
   // guardar datos en el storague
