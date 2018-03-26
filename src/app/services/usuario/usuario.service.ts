@@ -1,81 +1,92 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user.model';
+import { Usuario } from '../../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
-import { Router } from '@angular/router';
-
 import 'rxjs/add/operator/map';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UsuarioService {
 
+  usuario: string;
   token: string;
-  usuario: User;
 
-  constructor( public http: HttpClient, public router: Router) {
-    // console.log('Servicio de usuario listo');
+  constructor( public http: HttpClient,
+               public router: Router ) {
     this.cargarStorage();
+    // console.log('Servicio de usuario listo');
   }
 
+  // saber si un usuario esta logueado o no
   estaLogueado() {
-
     return ( this.token.length > 5 ) ? true : false;
-
   }
 
-  cargarStorage() {
-    if ( localStorage.getItem('token')) {
-      this.token = localStorage.getItem('token');
-    } else {
-      this.token = '';
-    }
+  // crea un usuario en el backend
+  crearUsuario( usuario: Usuario) {
+
+    let url = URL_SERVICIOS + 'auth/register/';
+
+    return this.http.post( url, usuario)
+                .map( (resp: any) => {
+                  swal('Usuario creado', usuario.email, 'success');
+                  return resp.usuario;
+                });
   }
 
-  crearUsuario ( usuario: User) {
+  // inicio de sesion
+  login( usuario: Usuario, recordar: boolean = false ) {
 
-    let url = URL_SERVICIOS + '/user/';
+    let url = URL_SERVICIOS + 'auth/';
 
-    return this.http.post( url, usuario )
-              .map( (resp: any) => {
-
-                swal('Usuario creado', usuario.email, 'success');
-                return resp.usuario;
-              });
-  }
-
-  guardarStorague( token: string) {
-    localStorage.setItem('token', token);
-
-    this.token = token;
-  }
-
-
-  login ( usuario: User, recordar: boolean = false ) {
-
-    if ( recordar) {
-      localStorage.setItem('email', usuario.email );
+    if ( recordar ) {
+      localStorage.setItem('email', usuario.username);
     }else {
       localStorage.removeItem('email');
     }
 
-    let url = URL_SERVICIOS + '/api/v1/auth/';
+    return this.http.post( url, usuario)
+               .map( (resp: any) => {
+                //  localStorage.setItem('id', resp.id);
+                //  localStorage.setItem('token', resp.token);
+                //  localStorage.setItem('usuario', resp.user);
+                this.guardarStorage(resp.id, resp.token, resp.user);
 
-    return this.http.post( url, usuario ).
-        map( (resp: any) => {
-          // localStorage.setItem('token', resp.token);
-          this.guardarStorague(resp.token);
-
-          return true;
-        });
+                 return true;
+              });
   }
 
+  // logout del usuario
   logout() {
-
     this.token = '';
+    this.usuario = '';
 
     localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('id');
 
     this.router.navigate(['/login']);
+  }
+
+  // guardar datos en el storague
+  guardarStorage(id: string, token: string, usuario: string) {
+
+    localStorage.setItem('id', id);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', usuario);
+
+    this.usuario = usuario;
+    this.token = token;
+  }
+
+  // cargar datos del storage
+  cargarStorage() {
+    if ( localStorage.getItem('token')) {
+      this.token = localStorage.getItem('token');
+      this.usuario = localStorage.getItem('usuario');
+    } else {
+      this.token = '';
+      this.usuario = '';
+    }
   }
 }

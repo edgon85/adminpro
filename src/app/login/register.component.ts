@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, group } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import swal from 'sweetalert';
+import * as swal from 'sweetalert';
 import { UsuarioService } from '../services/service.index';
-import { User } from '../models/user.model';
+import { Usuario } from '../models/usuario.model';
 import { Router } from '@angular/router';
 
 declare function init_plugins();
@@ -14,21 +14,20 @@ declare function init_plugins();
 })
 export class RegisterComponent implements OnInit {
 
-  forma: FormGroup;
+  forma: FormGroup;  // trabaja el formulario de registro
 
-  constructor( public _serviceUser: UsuarioService,
-               public route: Router) {
+  constructor(
+    public _usuarioService: UsuarioService,
+    public router: Router) { }
 
-              }
+  sonIguales( campo1: string, campo2: string ) { // valida las contraseñas
 
-  sonIguales( campo1: string, campo2: string ) {
-
+    // tslint:disable-next-line:no-shadowed-variable
     return ( group: FormGroup ) => {
-
       let pass1 = group.controls[campo1].value;
       let pass2 = group.controls[campo2].value;
 
-      if ( pass1 === pass2 ) {
+      if (pass1 === pass2) {  // si son iguales deja pasar
         return null;
       }
 
@@ -39,40 +38,56 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    init_plugins();
-
+    init_plugins(); // inicia el plugin
 
     this.forma = new FormGroup({
-      nombre: new FormControl( null, Validators.required),
-      correo: new FormControl( null, [Validators.required, Validators.email]),
-      password: new FormControl( null, Validators.required),
-      password2: new FormControl( null, Validators.required),
-      condiciones: new FormControl(false),
-    }, { validators: this.sonIguales( 'password', 'password2') });
+      username: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, Validators.required),
+      password2: new FormControl(null, Validators.required),
+      condiciones: new FormControl(false)
+    }, { validators: this.sonIguales('password', 'password2') });
+
+    this.forma.setValue({
+      username: 'Test',
+      email: 'test@test.com',
+      password: '123456',
+      password2: '123456',
+      condiciones: true
+    });
+
   }
 
-  registrarUsuario ( ) {
+  registrarUsuario() {
 
-    if ( this.forma.invalid ) {
+    if ( this.forma.invalid ) {    // Si la forma es invalida no retorna nada
       return;
     }
 
     if ( !this.forma.value.condiciones ) {
-      swal ('Importante', 'Debe aceptar los cambios', 'warning');
+      console.log('Debe aceptar las condiciones');
+      swal('Importante', 'Debe aceptar las condiciones', 'warning');
       return;
     }
 
-    let usuario = new User(
-      this.forma.value.nombre,
-      this.forma.value.correo,
-      this.forma.value.password);
+    console.log('forma valida ', this.forma.valid);
+    console.log(this.forma.value);
 
-    this._serviceUser.crearUsuario( usuario )
+    // obtener los datos del usuario desde el formulario
+    let usuario = new Usuario(
+      this.forma.value.username,
+      this.forma.value.email,
+      this.forma.value.password,
+      this.forma.value.password2
+    );
+
+    // llamamos el servicio crear usuario y todo el json de la api se guarda en resp
+    this._usuarioService.crearUsuario(usuario)
                 .subscribe( resp => {
-                  // console.log( resp );
-                  this.route.navigate(['/login']);
+                  // console.log(resp); // muetra el resultado del json que manda el servidor
+
+                  this.router.navigate(['/login']);
 
                 });
-
-    }
+  }
 }
