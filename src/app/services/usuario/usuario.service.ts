@@ -28,6 +28,12 @@ export class UsuarioService {
 
     let url = URL_SERVICIOS + 'auth/';
 
+    if ( recordar ) {
+      localStorage.setItem('email', usuario.username);
+    }else {
+      localStorage.removeItem('email');
+    }
+
     return this.http.post( url, usuario)
                .map( (resp: any) => {
                  localStorage.setItem('id', resp.id);
