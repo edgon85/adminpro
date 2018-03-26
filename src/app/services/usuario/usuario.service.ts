@@ -7,8 +7,17 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class UsuarioService {
 
+  usuario: string;
+  token: string;
+
   constructor( public http: HttpClient) {
-    console.log('Servicio de usuario listo');
+    this.cargarStorage();
+    // console.log('Servicio de usuario listo');
+  }
+
+  // saber si un usuario esta logueado o no
+  estaLogueado() {
+    return ( this.token.length > 5 ) ? true : false;
   }
 
   // crea un usuario en el backend
@@ -36,11 +45,34 @@ export class UsuarioService {
 
     return this.http.post( url, usuario)
                .map( (resp: any) => {
-                 localStorage.setItem('id', resp.id);
-                 localStorage.setItem('token', resp.token);
-                 localStorage.setItem('usuario', resp.user);
+                //  localStorage.setItem('id', resp.id);
+                //  localStorage.setItem('token', resp.token);
+                //  localStorage.setItem('usuario', resp.user);
+                this.guardarStorage(resp.id, resp.token, resp.user);
 
                  return true;
               });
+  }
+
+  // guardar datos en el storague
+  guardarStorage(id: string, token: string, usuario: string) {
+
+    localStorage.setItem('id', id);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', usuario);
+
+    this.usuario = usuario;
+    this.token = token;
+  }
+
+  // cargar datos del storage
+  cargarStorage() {
+    if ( localStorage.getItem('token')) {
+      this.token = localStorage.getItem('token');
+      this.usuario = localStorage.getItem('usuario');
+    } else {
+      this.token = '';
+      this.usuario = '';
+    }
   }
 }
