@@ -10,6 +10,8 @@ export class UsuarioService {
 
   usuario: string;
   token: string;
+  img: string;
+  id: string;
 
   constructor( public http: HttpClient,
                public router: Router ) {
@@ -75,6 +77,7 @@ export class UsuarioService {
     localStorage.setItem('token', token);
     localStorage.setItem('usuario', usuario);
 
+    this.id = id;
     this.usuario = usuario;
     this.token = token;
   }
@@ -84,9 +87,23 @@ export class UsuarioService {
     if ( localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.usuario = localStorage.getItem('usuario');
+      this.id = localStorage.getItem('id');
     } else {
       this.token = '';
       this.usuario = '';
     }
+  }
+
+  cargarUsuario() {
+    interface UserResponse {
+      img: string;
+      correo: string;
+    }
+
+    let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
+
+    // console.log( url );
+    return this.http.get<UserResponse>( url );
+
   }
 }
