@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
@@ -96,14 +96,39 @@ export class UsuarioService {
 
   cargarUsuario() {
     interface UserResponse {
-      img: string;
+      user_id: string;
+      username: string;
+      first_name: string;
+      last_name: string;
       correo: string;
+      img: string;
+      role: string;
     }
 
     let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
 
     // console.log( url );
     return this.http.get<UserResponse>( url );
+
+  }
+
+  actualizarUsuario ( usuario: Usuario ) {
+
+    let token = localStorage.getItem('token');
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
+
+
+
+    let url = URL_SERVICIOS + 'user/' + usuario.username + '/' ;
+    console.log( url );
+
+    return this.http.put(url, usuario, httpOptions );
 
   }
 }
