@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+// import { ProfileComponent } from './pages/profile/profile.component';
 
 
 
@@ -27,7 +27,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
     LoginComponent,
     RegisterComponent,
     NopagefoundComponent,
-    ProfileComponent,
+    // ProfileComponent,
   ],
   imports: [
     BrowserModule,
