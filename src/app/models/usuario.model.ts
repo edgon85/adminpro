@@ -9,6 +9,6 @@ export class Usuario {
         public last_name?: string,
         public img?: string,
         public role?: string,
-        public _id?: string
+        public id?: string
     ) {}
 }

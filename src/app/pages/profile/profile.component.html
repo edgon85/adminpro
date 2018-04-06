@@ -10,7 +10,7 @@
                         <label for="exampleInputuname">Usuario</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]="usuario" name="username" class="form-control" placeholder="Username" required type="text">
+                            <input [ngModel]=" usuario.username " disabled name="username" class="form-control" placeholder="Username" required type="text">
                         </div>
                     </div>
 
@@ -18,7 +18,7 @@
                         <label for="exampleInputEmail1">Nombre</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]=" nombre " name="first_name" class="form-control" placeholder="Primer nombre" required type="text">
+                            <input [ngModel]=" usuario.first_name " name="first_name" class="form-control" placeholder="Primer nombre" required type="text">
                         </div>
                     </div>
 
@@ -26,7 +26,7 @@
                         <label for="exampleInputEmail1">Apellido</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]=" apellido " name="last_name" class="form-control" placeholder="Apellido" required type="text">
+                            <input [ngModel]=" usuario.last_name " name="last_name" class="form-control" placeholder="Apellido" required type="text">
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                         <label for="exampleInputEmail1">Correo del usuario</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-email"></i></div>
-                            <input [ngModel]=" correo " name="email" class="form-control" placeholder="Email del usuario" required type="email">
+                            <input [ngModel]=" usuario.email " name="email" class="form-control" placeholder="Email del usuario" required type="email">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">

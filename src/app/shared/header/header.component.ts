@@ -9,21 +9,22 @@ import { Usuario } from '../../models/usuario.model';
 })
 export class HeaderComponent implements OnInit {
 
-  usuario: string;
-  correo: string;
+  // usuario: string;
+  // correo: string;
   img: string;
+
+  usuario: Usuario;
 
   constructor( public _usuarioService: UsuarioService ) { }
 
   ngOnInit() {
 
-  this.usuario = this._usuarioService.usuario;
+  this.usuario = this._usuarioService.usuario;    // datos del usuario
 
-  this._usuarioService.cargarUsuario()
-                        .subscribe( (data: any) => this.img = data.img);
-
-  this._usuarioService.cargarUsuario()
-                        .subscribe( (data: any) => this.correo = data.email);
+  this._usuarioService.cargarPerfil()             // obtiene la imagen
+                        .subscribe( (data: any) => {
+                        this.img = data.img;
+                        });
 
 
 

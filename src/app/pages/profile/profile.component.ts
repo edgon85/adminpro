@@ -9,21 +9,12 @@ import { Usuario } from '../../models/usuario.model';
 })
 export class ProfileComponent implements OnInit {
 
-  user: Usuario;
+  usuario: Usuario;
 
-  usuario: string;
-  correo: string;
-  nombre: string;
-  apellido: string;
 
   constructor( public _usuarioService: UsuarioService) {
 
     this.usuario = this._usuarioService.usuario;
-    this._usuarioService.cargarUsuario().subscribe( (data: any) => {
-                            this.correo = data.email;
-                            this.nombre = data.first_name;
-                            this.apellido = data.last_name;
-                          });
   }
 
   ngOnInit() {
@@ -33,10 +24,15 @@ export class ProfileComponent implements OnInit {
 
   guardar( usuario: Usuario) {
     // console.log( usuario );
+    let username = JSON.parse( localStorage.getItem('usuario'));
 
-    this.user = usuario;
+    // this.usuario.username = usuario.username;
+    this.usuario.username = username.username;
+    this.usuario.email  = usuario.email;
+    this.usuario.first_name = usuario.first_name;
+    this.usuario.last_name = usuario.last_name;
 
-    this._usuarioService.actualizarUsuario( this.user )
+    this._usuarioService.actualizarUsuario( this.usuario )
                         .subscribe( resp => {
                           // console.log( resp );
                         });
