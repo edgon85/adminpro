@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SidebarService, UsuarioService } from '../../services/service.index';
+import { Usuario } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,10 +9,19 @@ import { SidebarService, UsuarioService } from '../../services/service.index';
 })
 export class SidebarComponent implements OnInit {
 
+  usuario: Usuario;
+  img: string;
+
   constructor( public _sidebar: SidebarService,
                public _usuarioService: UsuarioService) { }
 
   ngOnInit() {
+
+    this.usuario = this._usuarioService.usuario;        // obtengo los datos del usuario
+
+    this._usuarioService.cargarPerfil()                 // obtengo la imagen
+                        .subscribe( (data: any) => this.img = data.img);
+
   }
 
 }

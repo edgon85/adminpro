@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 @Injectable()
 export class UsuarioService {
 
-  usuario: string;
+  usuario: Usuario;
+
   token: string;
+  img: string;
 
   constructor( public http: HttpClient,
-               public router: Router ) {
+               public router: Router,
+               public _subirArchivoService: SubirArchivoService ) {
     this.cargarStorage();
     // console.log('Servicio de usuario listo');
   }
 
-  // saber si un usuario esta logueado o no
+  // ---------------------- saber si un usuario esta logueado o no -------------
   estaLogueado() {
     return ( this.token.length > 5 ) ? true : false;
   }
 
-  // crea un usuario en el backend
+  // ----------------------- crea un usuario en el backend ---------------------
   crearUsuario( usuario: Usuario) {
 
     let url = URL_SERVICIOS + 'auth/register/';
@@ -34,7 +38,7 @@ export class UsuarioService {
                 });
   }
 
-  // inicio de sesion
+  // ------------------------ inicio de sesion ----------------------------------
   login( usuario: Usuario, recordar: boolean = false ) {
 
     let url = URL_SERVICIOS + 'auth/';
@@ -47,19 +51,17 @@ export class UsuarioService {
 
     return this.http.post( url, usuario)
                .map( (resp: any) => {
-                //  localStorage.setItem('id', resp.id);
-                //  localStorage.setItem('token', resp.token);
-                //  localStorage.setItem('usuario', resp.user);
-                this.guardarStorage(resp.id, resp.token, resp.user);
+                this.guardarStorage(resp.id, resp.token, resp );
+                console.log( resp );
 
                  return true;
               });
   }
 
-  // logout del usuario
+  // -------------------------- logout del usuario ----------------------------------
   logout() {
     this.token = '';
-    this.usuario = '';
+    this.usuario = null;
 
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
@@ -68,25 +70,98 @@ export class UsuarioService {
     this.router.navigate(['/login']);
   }
 
-  // guardar datos en el storague
-  guardarStorage(id: string, token: string, usuario: string) {
+  //  -------------------------- guardar datos en el storague -------------------------
 
+  guardarStorage(id: string, token: string, usuario: Usuario) {
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
-    localStorage.setItem('usuario', usuario);
+    localStorage.setItem('usuario', JSON.stringify(usuario) );
 
     this.usuario = usuario;
     this.token = token;
   }
 
-  // cargar datos del storage
+  // ---------------------- cargar datos del storage ---------------------------------
   cargarStorage() {
     if ( localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
-      this.usuario = localStorage.getItem('usuario');
+      this.usuario = JSON.parse( localStorage.getItem('usuario'));
     } else {
       this.token = '';
-      this.usuario = '';
+      this.usuario = null;
     }
   }
+
+// -------------- Carga usuario ------------------------------
+
+cargarPerfil() {
+  interface UserResponse {
+    user_id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    correo: string;
+    img: string;
+    role: string;
+  }
+
+  let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
+
+  return this.http.get<UserResponse>( url );
+
+  }
+
+
+  // --------------------- Actualiza un usuario ------------------------
+  actualizarUsuario ( usuario: Usuario ) {
+
+    let token = localStorage.getItem('token');
+    let username = JSON.parse( localStorage.getItem('usuario'));
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
+
+
+    let url = URL_SERVICIOS + 'user/' + username.username + '/' ;
+    console.log('--->' + url );
+
+    return this.http.put(url, usuario, httpOptions )
+                    .map( (resp: any) => {
+                      this.guardarStorage( resp.id, token, resp);
+                      swal('Usuario actualizado', usuario.username, 'success');
+
+                      return true;
+                    } );
+
+  }
+
+
+  cambiarImagen( archivo: File, id: string) {
+
+    this._subirArchivoService.subirArchivo( archivo, '', id)
+      .then( (resp: any) => {
+        //  console.log( resp.img );
+        this.img = resp.img;
+
+      swal({
+        title: 'Imagen Actualizada',
+        text: this.usuario.username,
+        icon: 'success'
+      }).then(function() {
+        location.reload();
+      });
+        // this.guardarStorage(id, this.token, this.usuario);
+      })
+      .catch( resp => {
+        console.log( resp);
+      });
+
+
+  }
+
+
 }

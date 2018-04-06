@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/service.index';
+import { Usuario } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +9,25 @@ import { UsuarioService } from '../../services/service.index';
 })
 export class HeaderComponent implements OnInit {
 
+  // usuario: string;
+  // correo: string;
+  img: string;
+
+  usuario: Usuario;
+
   constructor( public _usuarioService: UsuarioService ) { }
 
   ngOnInit() {
+
+  this.usuario = this._usuarioService.usuario;    // datos del usuario
+
+  this._usuarioService.cargarPerfil()             // obtiene la imagen
+                        .subscribe( (data: any) => {
+                        this.img = data.img;
+                        });
+
+
+
   }
 
 }
