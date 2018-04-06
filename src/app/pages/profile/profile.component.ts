@@ -10,7 +10,7 @@ import { Usuario } from '../../models/usuario.model';
 export class ProfileComponent implements OnInit {
 
   usuario: Usuario;
-
+  imagenSubir: File;
 
   constructor( public _usuarioService: UsuarioService) {
 
@@ -37,6 +37,20 @@ export class ProfileComponent implements OnInit {
                           // console.log( resp );
                         });
 
+  }
+
+  seleccionImage( archivo: File ) {
+
+    if ( !archivo ) {
+      this.imagenSubir = null;
+      return;
+    }
+
+    this.imagenSubir = archivo;
+  }
+
+  cambiarImagen() {
+    this._usuarioService.cambiarImagen( this.imagenSubir, this.usuario.id);
   }
 
 }

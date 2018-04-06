@@ -4,20 +4,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 @Injectable()
 export class UsuarioService {
 
   usuario: Usuario;
 
-  // usuario: string;
   token: string;
   img: string;
-  // id: string;
-  // email: string;
 
   constructor( public http: HttpClient,
-               public router: Router ) {
+               public router: Router,
+               public _subirArchivoService: SubirArchivoService ) {
     this.cargarStorage();
     // console.log('Servicio de usuario listo');
   }
@@ -52,10 +51,6 @@ export class UsuarioService {
 
     return this.http.post( url, usuario)
                .map( (resp: any) => {
-                //  localStorage.setItem('id', resp.id);
-                //  localStorage.setItem('token', resp.token);
-                //  localStorage.setItem('usuario', resp.user);
-                // localStorage.setItem('usuario-->', JSON.stringify(resp) );
                 this.guardarStorage(resp.id, resp.token, resp );
                 console.log( resp );
 
@@ -86,25 +81,11 @@ export class UsuarioService {
     this.token = token;
   }
 
-
-  // guardarStorage(id: string, token: string, usuario: string, email: string) {
-
-  //   localStorage.setItem('id', id);
-  //   localStorage.setItem('token', token);
-  //   localStorage.setItem('usuario', usuario);
-  //   localStorage.setItem('email', email );
-
-  //   this.id = id;
-  //   this.usuario = usuario;
-  //   this.token = token;
-  // }
-
   // ---------------------- cargar datos del storage ---------------------------------
   cargarStorage() {
     if ( localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse( localStorage.getItem('usuario'));
-      // this.id = localStorage.getItem('id');
     } else {
       this.token = '';
       this.usuario = null;
@@ -126,23 +107,7 @@ cargarPerfil() {
 
   let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
 
-  // console.log( url );
   return this.http.get<UserResponse>( url );
-  // cargarUsuario() {
-  //   interface UserResponse {
-  //     user_id: string;
-  //     username: string;
-  //     first_name: string;
-  //     last_name: string;
-  //     correo: string;
-  //     img: string;
-  //     role: string;
-  //   }
-
-  //   let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
-
-  //   // console.log( url );
-  //   return this.http.get<UserResponse>( url );
 
   }
 
@@ -173,4 +138,30 @@ cargarPerfil() {
                     } );
 
   }
+
+
+  cambiarImagen( archivo: File, id: string) {
+
+    this._subirArchivoService.subirArchivo( archivo, '', id)
+      .then( (resp: any) => {
+        //  console.log( resp.img );
+        this.img = resp.img;
+
+      swal({
+        title: 'Imagen Actualizada',
+        text: this.usuario.username,
+        icon: 'success'
+      }).then(function() {
+        location.reload();
+      });
+        // this.guardarStorage(id, this.token, this.usuario);
+      })
+      .catch( resp => {
+        console.log( resp);
+      });
+
+
+  }
+
+
 }
