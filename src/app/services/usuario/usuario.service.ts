@@ -159,7 +159,14 @@ cargarPerfil() {
       .catch( resp => {
         console.log( resp);
       });
+  }
 
+
+  cargarUsuarios( page: number = 1) {
+
+    let url = URL_SERVICIOS + 'user_profile/' + '?page=' + page;
+
+    return this.http.get( url );
 
   }
 
