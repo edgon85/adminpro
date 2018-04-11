@@ -170,5 +170,12 @@ cargarPerfil() {
 
   }
 
+  buscarUsuarios( termino: string) {
+    let url = URL_SERVICIOS + 'user_profile/?q=' + termino;
+
+    return this.http.get( url )
+               .map( (resp: any) => resp.results );
+  }
+
 
 }

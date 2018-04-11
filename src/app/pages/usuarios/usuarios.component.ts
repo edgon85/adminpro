@@ -14,6 +14,8 @@ export class UsuariosComponent implements OnInit {
   totalRegistros: number = 0;
   paginator: number = 5;
 
+  cargando: boolean = true;
+
 
 
   constructor( public _usuarioService: UsuarioService ) { }
@@ -24,12 +26,16 @@ export class UsuariosComponent implements OnInit {
 
   cargarUsuarios() {
 
+    this.cargando = true;
+
     this._usuarioService.cargarUsuarios( this.page )
                         .subscribe( (resp: any) => {
                           console.log( resp );
                           this.totalRegistros = resp.count;
                           this.usuarios = resp.results;
                         } );
+
+    this.cargando = false;
   }
 
   siguiente( ) {
@@ -54,4 +60,12 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  buscarUsuario( termino: string) {
+    console.log( termino );
+    this._usuarioService.buscarUsuarios( termino )
+                        .subscribe( (usuarios: Usuario[]) => {
+                          // console.log( usuario );
+                          this.usuarios = usuarios;
+                        } );
+  }
 }

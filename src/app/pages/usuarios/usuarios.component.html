@@ -2,13 +2,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <input #input type="text" class="form-control" placeholder="Buscar">
+                <input #input (keyup)="buscarUsuario( input.value )" type="text" class="form-control" placeholder="Buscar">
             </div>
         </div>
     </div>
 </div>
 
-<div class="row animated fadeIn">
+<div class="row animated fadeIn" *ngIf="cargando">
     <div class="col-sm-12">
         <div class="alert alert-warning text-center">
             <strong>Cargando</strong>
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="row animated fadeIn">
+<div class="row animated fadeIn" *ngIf="!cargando">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -34,13 +34,15 @@
                             <th>Correo</th>
                             <th>Nombre</th>
                             <th>Role</th>
-                            <th>Auth</th>
+                            <!-- <th>Auth</th> -->
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let usuario of usuarios">
-                            <td></td>
+                            <td class="w70">
+                                <img [src]="usuario.img | imagen" class="img-50 img-circle">
+                            </td>
                             <td>{{ usuario.username }}</td>
                             <td>{{ usuario.email }}</td>
                             <td>{{ usuario.first_name}} {{ usuario.last_name }}</td>
