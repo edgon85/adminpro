@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/service.index';
+import { Perfil } from '../../models/perfil_usuario.model';
 
 @Component({
   selector: 'app-usuarios',
@@ -9,7 +10,7 @@ import { UsuarioService } from '../../services/service.index';
 })
 export class UsuariosComponent implements OnInit {
 
-  usuarios: Usuario[] = [];
+  usuarios: Perfil[] = [];
   page: number = 1;
   totalRegistros: number = 0;
   paginator: number = 5;
@@ -67,5 +68,22 @@ export class UsuariosComponent implements OnInit {
                           // console.log( usuario );
                           this.usuarios = usuarios;
                         } );
+  }
+
+  guardarUsuario( perfil: Perfil ) {
+
+    let data = JSON.stringify(perfil.role);
+
+    let role = {
+      'username': perfil.username,
+      'user_id': perfil.user_id,
+      'role': perfil.role};
+
+    // console.log( data );
+
+
+    this._usuarioService.actualizarRole( role ).subscribe();
+
+    // console.log( '------> ' + perfil);
   }
 }

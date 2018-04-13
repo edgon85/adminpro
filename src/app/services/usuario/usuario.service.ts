@@ -5,11 +5,13 @@ import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
+import { Perfil } from '../../models/perfil_usuario.model';
 
 @Injectable()
 export class UsuarioService {
 
   usuario: Usuario;
+  perfil: Perfil;
 
   token: string;
   img: string;
@@ -177,5 +179,27 @@ cargarPerfil() {
                .map( (resp: any) => resp.results );
   }
 
+
+  actualizarRole( perfil: Perfil) {
+    let token = localStorage.getItem('token');
+    // let username = JSON.parse( localStorage.getItem('usuario'));
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
+
+    // let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
+    let url = URL_SERVICIOS + 'user_profile/' + perfil.user_id + '/';
+
+    return this.http.put( url, perfil, httpOptions )
+                    .map( resp => {
+                      // console.log('----> ' + url );
+                      swal('Usuario actualizado', perfil.username, 'success');
+                    });
+
+  }
 
 }

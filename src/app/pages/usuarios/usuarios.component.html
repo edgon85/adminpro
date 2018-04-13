@@ -46,11 +46,18 @@
                             <td>{{ usuario.username }}</td>
                             <td>{{ usuario.email }}</td>
                             <td>{{ usuario.first_name}} {{ usuario.last_name }}</td>
-                            <td>{{ usuario.role }}</td>
+                            <!-- <td>{{ usuario.role }}</td> -->
+                            <td>
+
+                                <select [(ngModel)]="usuario.role" name="role" class="form-control">
+                                    <option value="admin_role">ADMIN_ROLE</option>
+                                    <option value="user_role">USER_ROLE</option>
+                                </select>
+                            </td>
                             <td></td>
                             <td>
-                                <button class="btn btn-primary"> <i class="fa fa-save"></i></button>
-                                <button class="btn btn-danger"> <i class="fa fa-trash-o"></i></button>
+                                <button (click)="guardarUsuario( usuario )" class="btn btn-primary"> <i class="fa fa-save"></i></button>
+                                <!-- <button class="btn btn-danger"> <i class="fa fa-trash-o"></i></button> -->
                             </td>
                         </tr>
                     </tbody>
