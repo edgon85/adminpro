@@ -26,7 +26,13 @@ export class HeaderComponent implements OnInit {
                         this.img = data.img;
                         });
 
-
+  // actualiza el componente para cambiar la imagen
+  this._usuarioService.notificacion.subscribe(
+    resp => this._usuarioService.cargarPerfil()
+    .subscribe( (data: any) => {
+    this.img = data.img;
+    })
+  );
 
   }
 

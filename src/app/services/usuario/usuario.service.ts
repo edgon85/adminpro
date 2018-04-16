@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
@@ -15,6 +15,8 @@ export class UsuarioService {
 
   token: string;
   img: string;
+
+  public notificacion = new EventEmitter<any>(); // notificacion para las imagenes
 
   constructor( public http: HttpClient,
                public router: Router,
@@ -148,15 +150,9 @@ cargarPerfil() {
       .then( (resp: any) => {
         //  console.log( resp.img );
         this.img = resp.img;
+        swal('Imagen Actualizada', this.usuario.username, 'success');
+        this.notificacion.emit( resp ); // envia una notificacion a los componentes si hay un cambio
 
-      swal({
-        title: 'Imagen Actualizada',
-        text: this.usuario.username,
-        icon: 'success'
-      }).then(function() {
-        location.reload();
-      });
-        // this.guardarStorage(id, this.token, this.usuario);
       })
       .catch( resp => {
         console.log( resp);

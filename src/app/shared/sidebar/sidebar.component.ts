@@ -22,6 +22,12 @@ export class SidebarComponent implements OnInit {
     this._usuarioService.cargarPerfil()                 // obtengo la imagen
                         .subscribe( (data: any) => this.img = data.img);
 
+    // actualiza el componente para cambiar la imagen
+    this._usuarioService.notificacion.subscribe(
+      resp => this._usuarioService.cargarPerfil()
+      .subscribe( (data: any) => this.img = data.img)
+    );
+
   }
 
 }
