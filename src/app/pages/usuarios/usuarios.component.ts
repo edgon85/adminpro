@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/service.index';
 import { Perfil } from '../../models/perfil_usuario.model';
+import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -19,10 +20,13 @@ export class UsuariosComponent implements OnInit {
 
 
 
-  constructor( public _usuarioService: UsuarioService ) { }
+  constructor( public _usuarioService: UsuarioService,
+               public _modalUploadService: ModalUploadService) { }
 
   ngOnInit() {
     this.cargarUsuarios();
+    this._modalUploadService.notificacion
+        .subscribe( resp => this.cargarUsuarios());
   }
 
   cargarUsuarios() {
@@ -85,5 +89,9 @@ export class UsuariosComponent implements OnInit {
     this._usuarioService.actualizarRole( role ).subscribe();
 
     // console.log( '------> ' + perfil);
+  }
+
+  mostrarModal( id: string) {
+    this._modalUploadService.mostrarModal( 'usuario', id);
   }
 }
