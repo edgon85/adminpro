@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Perfil del usuario</h4>
-                <h6 class="card-subtitle">Nombre Usuario</h6>
+                <!-- <h6 class="card-subtitle">{{usuario.username}}</h6> -->
 
                 <form ngNativeValidator #f="ngForm" (ngSubmit)="guardar( f.value )" class="form p-t-20">
                     <div class="form-group">
@@ -51,7 +51,7 @@
         <div class="card">
             <div class="card-body" align="center">
                 <h4 class="card-title">Foto del usuario</h4>
-                <h6 class="card-subtitle">Nombre Usuario</h6>
+                <h6 class="card-subtitle">{{ usuario.first_name }} {{ usuario.last_name }}</h6>
 
                 <img *ngIf="!imagenTemp" [src]="img | imagen" class="w150">
                 <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">

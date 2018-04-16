@@ -1,18 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
+import { Perfil } from '../../models/perfil_usuario.model';
 
 @Injectable()
 export class UsuarioService {
 
   usuario: Usuario;
+  perfil: Perfil;
 
   token: string;
   img: string;
+
+  public notificacion = new EventEmitter<any>(); // notificacion para las imagenes
 
   constructor( public http: HttpClient,
                public router: Router,
@@ -146,22 +150,52 @@ cargarPerfil() {
       .then( (resp: any) => {
         //  console.log( resp.img );
         this.img = resp.img;
+        swal('Imagen Actualizada', this.usuario.username, 'success');
+        this.notificacion.emit( resp ); // envia una notificacion a los componentes si hay un cambio
 
-      swal({
-        title: 'Imagen Actualizada',
-        text: this.usuario.username,
-        icon: 'success'
-      }).then(function() {
-        location.reload();
-      });
-        // this.guardarStorage(id, this.token, this.usuario);
       })
       .catch( resp => {
         console.log( resp);
       });
+  }
 
+
+  cargarUsuarios( page: number = 1) {
+
+    let url = URL_SERVICIOS + 'user_profile/' + '?page=' + page;
+
+    return this.http.get( url );
 
   }
 
+  buscarUsuarios( termino: string) {
+    let url = URL_SERVICIOS + 'user_profile/?q=' + termino;
+
+    return this.http.get( url )
+               .map( (resp: any) => resp.results );
+  }
+
+
+  actualizarRole( perfil: Perfil) {
+    let token = localStorage.getItem('token');
+    // let username = JSON.parse( localStorage.getItem('usuario'));
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
+
+    // let url = URL_SERVICIOS + 'user_profile/' + localStorage.getItem('id') + '/';
+    let url = URL_SERVICIOS + 'user_profile/' + perfil.user_id + '/';
+
+    return this.http.put( url, perfil, httpOptions )
+                    .map( resp => {
+                      // console.log('----> ' + url );
+                      swal('Usuario actualizado', perfil.username, 'success');
+                    });
+
+  }
 
 }
