@@ -10,6 +10,7 @@ export class SubirArchivoService {
   subirArchivo( archivo: File, tipo: string, id: string ) {
 
     return new Promise( (resolve, reject ) => {
+
       let formData = new FormData();
       let xhr = new XMLHttpRequest(); // inicializar peticion ajax
 
@@ -24,12 +25,14 @@ export class SubirArchivoService {
             console.log( 'Imagen subida' );
             resolve( JSON.parse(xhr.response));
           } else {
+            console.log('Fallo la subida');
             reject( xhr.response );
           }
         }
       };
 
-      let url = URL_SERVICIOS + 'user_profile/' + id + '/';
+      // let url = URL_SERVICIOS + 'user_profile/' + id + '/';
+      let url = URL_SERVICIOS +  tipo + '/' + id + '/';
       let token = localStorage.getItem('token');
 
 
