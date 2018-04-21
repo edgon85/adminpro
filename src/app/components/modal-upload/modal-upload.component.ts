@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubirArchivoService } from '../../services/service.index';
 import { ModalUploadService } from './modal-upload.service';
 
@@ -21,6 +21,8 @@ export class ModalUploadComponent implements OnInit {
   ngOnInit() {
   }
 
+  @ViewChild( 'inputFile' ) inputFile: any;
+
   subirImagen() {
     this._subirArchivoService.subirArchivo( this.imagenSubir, this._modalUploadSevice.tipo, this._modalUploadSevice.id)
     .then( (resp: any) => {
@@ -33,6 +35,8 @@ export class ModalUploadComponent implements OnInit {
     .catch( err => {
       console.log('Error en la carga!!');
     });
+
+    this.clearForm();
   }
 
   cerrarModal( ) {
@@ -64,5 +68,11 @@ export class ModalUploadComponent implements OnInit {
     reader.onloadend = () => this.imagenTemp = reader.result;
 
   }
+
+  clearForm() {
+    // console.log('Aqui obtienes el elemento para atribuir algo vazio: ', this.inputFile.nativeElement);
+
+    this.inputFile.nativeElement.value = '';
+}
 
 }
