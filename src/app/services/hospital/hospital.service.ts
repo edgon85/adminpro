@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICIOS, URL_GENERAL } from '../../config/config';
 import { Hospital } from '../../models/hospital.model';
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 declare var swal: any;
 
@@ -9,8 +10,10 @@ declare var swal: any;
 export class HospitalService {
 
   hospital: Hospital;
+  img: string;
 
-  constructor( public http: HttpClient) { }
+  constructor( public http: HttpClient,
+               public _subirArchivoService: SubirArchivoService) { }
 
   cargarHospitales() {
     let url = URL_SERVICIOS + 'hospital/';

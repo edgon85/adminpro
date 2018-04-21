@@ -46,7 +46,7 @@
 
                             <td class="w70">
                                 <!-- <img (click)="mostrarModal( usuario.user_id )" [src]="usuario.img | imagen" class="img-50 img-circle pointer"> -->
-                                <img (click)="cambiarImagen( hospital )" [src]="hospital.img | imagen" class="img-50 img-circle pointer">
+                                <img (click)="actualizarImagen( hospital )" [src]="hospital.img | imagen:'hospital'" class="img-50 img-circle pointer">
                             </td>
                             <td>
                                 <input [(ngModel)]=" hospital.name " name="name" class="form-control" placeholder="Nombre Hospital" required type="text">

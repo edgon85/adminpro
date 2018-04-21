@@ -21,9 +21,14 @@ export class HospitalesComponent implements OnInit {
 
   ngOnInit() {
     this.cargarHospitales();
+
+    this._modalUploadService.notificacion.subscribe(
+      () => this.cargarHospitales()
+    );
   }
 
 
+  // -------------------- cargar un Hospitales --------------------------- //
   cargarHospitales() {
 
     this.cargando = true;
@@ -38,8 +43,10 @@ export class HospitalesComponent implements OnInit {
   this.cargando = false;
   }
 
-  crearHospital( ) {
 
+
+  // -------------------- Crear un Hospital --------------------------- //
+  crearHospital( ) {
 
     swal({
       title: 'Crear Hospital',
@@ -50,6 +57,7 @@ export class HospitalesComponent implements OnInit {
           placeholder: 'Nombre Hospital',
           type: 'text',
           name: 'name',
+          require: true
 
         },
       },
@@ -72,6 +80,8 @@ export class HospitalesComponent implements OnInit {
 
   }
 
+
+  // -------------------- Actualizar un Hospital --------------------------- //
   actualizarHospital( hospital: Hospital) {
 
     let data = {
@@ -85,8 +95,9 @@ export class HospitalesComponent implements OnInit {
 
   }
 
-  eliminarHospital( id: string) {
 
+  // -------------------- Eliminar un Hospital --------------------------- //
+  eliminarHospital( id: string) {
 
     swal({
       title: 'Eliminar',
@@ -103,6 +114,8 @@ export class HospitalesComponent implements OnInit {
     });
   }
 
+
+  // -------------------- Buscar un Hospitales --------------------------- //
   buscarHospital( termino: string) {
     this._hospitalService.buscarHospital( termino )
     .subscribe( (hospital: Hospital[]) => {
@@ -112,7 +125,8 @@ export class HospitalesComponent implements OnInit {
   }
 
 
-  cambiarImagen( hospital: Hospital ) {
+  // -------------------- actializar imagen de un Hospital --------------------------- //
+  actualizarImagen( hospital: Hospital ) {
     this._modalUploadService.mostrarModal('hospital', hospital.id );
   }
 
