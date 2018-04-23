@@ -21,9 +21,6 @@ export class HospitalService {
     return this.http.get( url );
   }
 
-  obtrenerHospital( id: string) {
-
-  }
 
   // -------------------- Crear un Hospital --------------------------- //
   crearHospital( hospital: Hospital) {
