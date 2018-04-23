@@ -14,4 +14,12 @@ export class MedicoService {
     return this.http.get( url );
   }
 
+  // -------------------- Busca un Hospital --------------------------- //
+  buscarMedico( termino: string) {
+    let url = URL_SERVICIOS + 'doctor/list/?q=' + termino;
+
+    return this.http.get( url )
+    .map( (resp: any) => resp.results);
+ }
+
 }

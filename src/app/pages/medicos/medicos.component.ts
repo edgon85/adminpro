@@ -14,8 +14,6 @@ export class MedicosComponent implements OnInit {
   cargando: boolean;
   totalRegisto: string;
 
-  hospital: string;
-
   constructor( public _medicosService: MedicoService,
                public _hopitalService: HospitalService) { }
 
@@ -28,9 +26,6 @@ export class MedicosComponent implements OnInit {
       .subscribe( (resp: any) => {
         this.totalRegisto = resp.count;
         this.medicos = resp.results;
-
-        console.log( resp. results );
-
       });
   }
 
@@ -47,20 +42,15 @@ export class MedicosComponent implements OnInit {
   }
 
 
-  buscarMedico( termino: string ) {
+  // -------------------- Buscar un Hospitales --------------------------- //
+  buscarMedico( termino: string) {
 
+    this._medicosService.buscarMedico( termino )
+        .subscribe( (medico: Medico[]) => this.medicos = medico );
   }
 
   actualizarImagen( medico: Medico ) {
 
-  }
-
-  cargarHospital( id: string ) {
-    this._hopitalService.obtrenerHospital( id ).subscribe(
-      resp => {
-        console.log( resp );
-      }
-    );
   }
 
 }
