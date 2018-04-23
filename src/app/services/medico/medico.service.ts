@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { URL_SERVICIOS } from '../../config/config';
+import { URL_SERVICIOS, httpOptions } from '../../config/config';
 
 @Injectable()
 export class MedicoService {
@@ -20,6 +20,17 @@ export class MedicoService {
 
     return this.http.get( url )
     .map( (resp: any) => resp.results);
+ }
+
+
+ // -------------------- Eliminar un Hospital --------------------------- //
+ eliminarMedico( id: string ) {
+
+  let token = httpOptions;
+  let url = URL_SERVICIOS + 'doctor/' + id + '/';
+
+  return this.http.delete(url, token);
+
  }
 
 }

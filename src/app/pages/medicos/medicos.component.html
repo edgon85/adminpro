@@ -25,7 +25,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right">
-                    <button (click)="crearMedico()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+                    <button [routerLink]="['/medico', 'nuevo']" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
                 <i class="fa fa-plus"></i>
                   Crear Médico
               </button>
@@ -57,7 +57,7 @@
                             </td>
 
                             <td>
-                                <button (click)="actualizarMedico( medico )" class="btn btn-primary"> <i class="fa fa-edit"></i></button>
+                                <button [routerLink]="['/medico', medico.id]" class="btn btn-primary"> <i class="fa fa-edit"></i></button>
                                 <button (click)="eliminarMedico( medico.id )" class="btn btn-danger"> <i class="fa fa-trash-o"></i></button>
                             </td>
                         </tr>
