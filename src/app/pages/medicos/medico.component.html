@@ -1,3 +1,55 @@
-<p>
-  medico works!
-</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h3 class="box-title m-b-0">Médico: NOMBRE MEDICO</h3>
+            <hr>
+            <!-- aproximacion por templates -->
+            <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarMedico( f )" class="form-horizontal">
+                <div class="form-group row">
+                    <label class="col-sm-3 text-right control-label col-form-label">Nombre</label>
+                    <div class="col-sm-9">
+                        <input [(ngModel)]="medico.first_name" name="first_name" class="form-control" placeholder="Nombre" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 text-right control-label col-form-label">Apellidos</label>
+                    <div class="col-sm-9">
+                        <input [(ngModel)]="medico.last_name" name="last_name" class="form-control" id="inputEmail3" placeholder="Apellidos" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 text-right control-label col-form-label">Hospital</label>
+                    <div class="col-sm-9">
+                        <select [(ngModel)]="medico.hospital" name="hospital" class="form-control" required>
+                          <option value="">Seleccione Hospital</option>
+                          <option *ngFor="let hospital of hospitales " [value]="hospital.id"> {{ hospital.name }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success waves-effect waves-light m-t-10">
+                        <i class="fa fa-save"></i>
+                        Guardar</button>
+                <button routerLink="/medicos" class="btn btn-info waves-effect waves-light m-t-10">Cancelar</button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-body">
+            <h4 class="box-title m-b-0">Hospital</h4>
+
+            <img src="" alt="">
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-body">
+            <h4 class="box-title m-b-0">Médico</h4>
+
+            <img src="" alt="">
+
+        </div>
+    </div>
+</div>

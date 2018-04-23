@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS, httpOptions } from '../../config/config';
+import { Medico } from '../../models/medico.model';
 
 @Injectable()
 export class MedicoService {
@@ -30,6 +31,22 @@ export class MedicoService {
   let url = URL_SERVICIOS + 'doctor/' + id + '/';
 
   return this.http.delete(url, token);
+
+ }
+
+ // -------------------- Crear un Hospital --------------------------- //
+
+ crearMedico( medico: Medico) {
+  let token = httpOptions;
+  let url = URL_SERVICIOS + 'doctor/';
+
+  return this.http.post( url, medico, token);
+      // .map( (resp: any) => {
+      //   swal('Médico Creado', medico.first_name, 'success');
+      //   console.log( resp);
+      //   return resp.results;
+      // });
+
 
  }
 
