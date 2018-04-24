@@ -15,12 +15,19 @@ export class HospitalService {
   constructor( public http: HttpClient,
                public _subirArchivoService: SubirArchivoService) { }
 
+  // -------------------- Cargar un Hospitales --------------------------- //
   cargarHospitales() {
     let url = URL_SERVICIOS + 'hospital/';
 
     return this.http.get( url );
   }
 
+  // -------------------- Cargar un Hospital --------------------------- //
+  cargarHospital( id: string) {
+    let url = URL_SERVICIOS + 'hospital/' + id + '/';
+
+    return this.http.get( url );
+  }
 
   // -------------------- Crear un Hospital --------------------------- //
   crearHospital( hospital: Hospital) {

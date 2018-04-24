@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row animated fadeIn">
     <div class="col-md-6">
         <div class="card card-body">
             <h3 class="box-title m-b-0">Médico: NOMBRE MEDICO</h3>
@@ -20,7 +20,7 @@
                 <div class="form-group row">
                     <label class="col-sm-3 text-right control-label col-form-label">Hospital</label>
                     <div class="col-sm-9">
-                        <select [(ngModel)]="medico.hospital" name="hospital" class="form-control" required>
+                        <select (change)="cambiarHospital( $event.target.value )" [(ngModel)]="medico.hospital" name="hospital" class="form-control" required>
                           <option value="">Seleccione Hospital</option>
                           <option *ngFor="let hospital of hospitales " [value]="hospital.id"> {{ hospital.name }}</option>
                         </select>
@@ -30,7 +30,7 @@
                 <button type="submit" class="btn btn-success waves-effect waves-light m-t-10">
                         <i class="fa fa-save"></i>
                         Guardar</button>
-                <button routerLink="/medicos" class="btn btn-info waves-effect waves-light m-t-10">Cancelar</button>
+                <a routerLink="/medicos" class="btn btn-info waves-effect waves-light m-t-10">Cancelar</a>
 
             </form>
         </div>
@@ -40,15 +40,15 @@
         <div class="card card-body">
             <h4 class="box-title m-b-0">Hospital</h4>
 
-            <img src="" alt="">
+            <img [src]=" hospital.img | imagen:'hospital' " class="img-rounded img-fluid">
 
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" *ngIf="medico.id">
         <div class="card card-body">
-            <h4 class="box-title m-b-0">Médico</h4>
+            <h4 class="box-title m-b-0">Fotografia</h4>
 
-            <img src="" alt="">
+            <img [src]=" medico.img | imagen:'medico'" class="img-rounded img-fluid">
 
         </div>
     </div>
