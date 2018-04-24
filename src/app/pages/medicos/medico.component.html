@@ -1,7 +1,7 @@
 <div class="row animated fadeIn">
     <div class="col-md-6">
         <div class="card card-body">
-            <h3 class="box-title m-b-0">Médico: NOMBRE MEDICO</h3>
+            <h3 class="box-title m-b-0">Médico: {{medico.first_name}} {{medico.last_name}}</h3>
             <hr>
             <!-- aproximacion por templates -->
             <form #f="ngForm" ngNativeValidate (ngSubmit)="guardarMedico( f )" class="form-horizontal">
@@ -48,7 +48,7 @@
         <div class="card card-body">
             <h4 class="box-title m-b-0">Fotografia</h4>
 
-            <img [src]=" medico.img | imagen:'medico'" class="img-rounded img-fluid">
+            <img (click)="cambiarFotografia()" [src]=" medico.img | imagen:'medico'" class="img-rounded img-fluid pointer">
 
         </div>
     </div>

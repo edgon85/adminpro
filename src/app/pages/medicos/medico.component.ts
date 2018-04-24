@@ -4,6 +4,7 @@ import { HospitalService, MedicoService } from '../../services/service.index';
 import { Hospital } from '../../models/hospital.model';
 import { Medico } from '../../models/medico.model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
 
 @Component({
   selector: 'app-medico',
@@ -19,7 +20,8 @@ export class MedicoComponent implements OnInit {
   constructor(public _hospitalService: HospitalService,
               public _medicoService: MedicoService,
               public router: Router,
-              public activateRoute: ActivatedRoute // lee el id que le manda a la url
+              public activateRoute: ActivatedRoute, // lee el id que le manda a la url
+              public _modalUploadService: ModalUploadService
             ) {
               activateRoute.params.subscribe(
                 params => {
@@ -35,6 +37,11 @@ export class MedicoComponent implements OnInit {
   ngOnInit( ) {
 
    this.cargarHospitales();
+
+   this._modalUploadService.notificacion.subscribe(resp => {
+    //  console.log( resp );
+     this.medico.img = resp.img;
+   });
   }
 
   // -------------------- Cargar Médicos --------------------------- //
@@ -51,18 +58,34 @@ export class MedicoComponent implements OnInit {
 
     console.log( JSON.stringify( f.value));
 
+
     if ( f.invalid ) {
       return;
     }
 
-    this._medicoService.crearMedico( this.medico )
-        .subscribe((resp: any) => {
-          swal('Médico Creado', this.medico.first_name + ' ' + this.medico.last_name, 'success');
+    if ( this.medico.id ) {
+      let medico = {
+        'id': this.medico.id,
+        'first_name': this.medico.first_name,
+        'last_name': this.medico.last_name,
+        'hospital': this.medico.hospital
+      };
 
-          this.medico.id = resp.id;
-          this.router.navigate(['/medico', this.medico.id]);
-        });
+      this._medicoService.actualizarMedico( medico )
+      .subscribe((resp: any ) => {
+        swal('Médico Actualizado correctamente', medico.first_name, 'success');
 
+      });
+
+    }else {
+      this._medicoService.crearMedico( this.medico )
+          .subscribe((resp: any) => {
+            swal('Médico Creado', this.medico.first_name + ' ' + this.medico.last_name, 'success');
+
+            this.medico.id = resp.id;
+            this.router.navigate(['/medico', this.medico.id]);
+          });
+    }
   }
 
   cambiarHospital( id: string ) {
@@ -79,5 +102,10 @@ export class MedicoComponent implements OnInit {
             this.medico = resp;
             this.cambiarHospital(resp.hospital);
           });
+  }
+
+
+  cambiarFotografia() {
+    this._modalUploadService.mostrarModal('doctor', this.medico.id);
   }
 }

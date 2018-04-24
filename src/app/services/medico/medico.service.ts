@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { URL_SERVICIOS, httpOptions } from '../../config/config';
+import { URL_SERVICIOS } from '../../config/config';
 import { Medico } from '../../models/medico.model';
 
 @Injectable()
@@ -37,10 +37,17 @@ export class MedicoService {
  // -------------------- Eliminar un Medico --------------------------- //
  eliminarMedico( id: string ) {
 
-  let token = httpOptions;
+  let token = localStorage.getItem('token');
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
   let url = URL_SERVICIOS + 'doctor/' + id + '/';
 
-  return this.http.delete(url, token);
+  return this.http.delete(url, httpOptions);
 
  }
 
@@ -48,10 +55,34 @@ export class MedicoService {
 
  crearMedico( medico: Medico) {
 
-  let token = httpOptions;
+  let token = localStorage.getItem('token');
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
   let url = URL_SERVICIOS + 'doctor/';
 
-  return this.http.post( url, medico, token);
+  return this.http.post( url, medico, httpOptions);
+ }
+
+ // -------------------- Crear un Medico --------------------------- //
+
+ actualizarMedico( medico: Medico) {
+
+  let token = localStorage.getItem('token');
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'JWT ' + token
+      })
+    };
+  let url = URL_SERVICIOS + 'doctor/' + medico.id + '/' ;
+
+  return this.http.put( url, medico, httpOptions);
  }
 
 }
