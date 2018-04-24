@@ -146,9 +146,9 @@ cargarPerfil() {
 
   cambiarImagen( archivo: File, id: string) {
 
-    this._subirArchivoService.subirArchivo( archivo, '', id)
+    this._subirArchivoService.subirArchivo( archivo, 'user_profile', id)
       .then( (resp: any) => {
-        //  console.log( resp.img );
+         console.log( resp );
         this.img = resp.img;
         swal('Imagen Actualizada', this.usuario.username, 'success');
         this.notificacion.emit( resp ); // envia una notificacion a los componentes si hay un cambio

@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Injectable()
 export class ModalUploadService {
@@ -9,7 +10,7 @@ export class ModalUploadService {
   public oculto: string = 'oculto';
 
 
-  public notificacion = new EventEmitter<boolean>();
+  public notificacion = new EventEmitter<any>();
 
 
   constructor() {

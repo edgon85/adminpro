@@ -35,7 +35,7 @@ export class UsuariosComponent implements OnInit {
 
     this._usuarioService.cargarUsuarios( this.page )
                         .subscribe( (resp: any) => {
-                          console.log( resp );
+                          // console.log( resp );
                           this.totalRegistros = resp.count;
                           this.usuarios = resp.results;
                         } );
@@ -92,6 +92,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   mostrarModal( id: string) {
-    this._modalUploadService.mostrarModal( 'usuario', id);
+    this._modalUploadService.mostrarModal( 'user_profile', id);
   }
 }

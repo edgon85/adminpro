@@ -6,40 +6,40 @@ import { URL_SERVICIOS, URL_GENERAL } from '../config/config';
 })
 export class ImagenPipe implements PipeTransform {
 
-  transform( img: any, tipo: string = 'usuario'): any {
+  transform( img: any, tipo: string = 'user_profile'): any {
 
-    let url = URL_GENERAL + 'media/';
+    let url = URL_GENERAL + 'media/Images/';
 
     if ( !img ) {
-      return url + 'Images/None/no-img.jpg';
+      return url + 'None/no-img.jpg';
     }
 
     if ( img.indexOf('http') >= 0 || img.indexOf('https') >= 0) {
       return img;
     }
 
-    // switch ( tipo ) {
+    switch ( tipo ) {
 
-    //   case 'Usuario':
-    //     url += 'Images/User/' + img;
-    //     // http://127.0.0.1:8000/media/http://127.0.0.1:8000/media/Images/User/gorrito_Wnddviz.jpg
+      case 'user_profile':
+        url += 'User/' + img;
+        // http://127.0.0.1:8000/media/Images/User/gorrito_Wnddviz.jpg
 
-    //     console.log(url);
-    //   break;
+        console.log(url);
+      break;
 
-    //   case 'Hospital':
-    //     url += 'Images/Hospital/' + img;
-    //   break;
+      case 'hospital':
+        url += 'Hospital/' + img;
+      break;
 
-    //   case 'Doctor':
-    //     url += 'Images/Doctor/' + img;
-    //   break;
+      case 'doctor':
+        url += 'Doctor/' + img;
+      break;
 
-    //   default:
-    //     console.log('Tipo de imagen no existe');
-    //     url += 'Images/None/no-img.jpg';
-    //     console.log(url);
-    // }
+      default:
+        console.log('Tipo de imagen no existe');
+        url += 'None/no-img.jpg';
+        console.log(url);
+    }
 
     return url;
 
